@@ -1,0 +1,85 @@
+<body>
+    <div class="contenedor">
+        <div class="cont-menu">
+            <button class="btn btn-light btn-estilo" id="btn-add-mesas" (click)="mesaModal(modalMesa)">Agregar mesa</button>
+            <div class="buscar">
+                <div class=" form-inline flex-style">
+                    <label class="label-buscar">Buscar: </label>
+                    <input type="text" class="form-control input-buscar" name="filterPost" placeholder="Search..." [(ngModel)]="filterPost">
+                </div>
+            </div>
+        </div>
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Nombre Mesa</th>
+                    <th scope="col">Código qr</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let mes of mesas">
+                    <td>{{mes.mesa}}</td>
+                    <td><button class="btn btn-info" (click)="qrModal(mes, modalQR)"><i class="fas fa-qrcode"></i></button></td>
+                    <td><button type="button" pTooltip="Editar Mesa" tooltipPosition="top" class="btn btn-tamano btn-estilo" (click)=" mesaModalEditar(mes,modalMesa)"><i class="far fa-edit"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<ng-template #modalMesa let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" *ngIf="!mesa.id">Agregar una nueva mesa</h4>
+        <h4 class="modal-title" *ngIf="mesa.id">Editar mesa</h4>
+        <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #formMesa="ngForm">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Ingrese nombre de la mesa</label>
+                <input type="text" class="form-control" name="mesa" [(ngModel)]="mesa.mesa" autocomplete="off" #nombre="ngModel" autofocus required minlength="3">
+                <small id="emailHelp" class="form-text text-muted" *ngIf="!(nombre.dirty || nombre.touched)">Ingresar solo el nombre ejemplo: mesa 5</small>
+                <div class="sms-alert" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+                    <div *ngIf="nombre.errors.required">
+                        <small class="p-invalid">Nombre de la mesa es requerido</small>
+                    </div>
+                    <div *ngIf="nombre.errors.minlength">
+                        <small class="p-invalid">Nombre debe tener almenos 3 caracteres</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="cont-btn" *ngIf="!mesa.id">
+                    <button type="button" class="btn btn-outline-danger btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                    <button type="button" class="btn btn-estilo btn-enviar" [disabled]="!formMesa.form.valid" (click)="guardarMesa()"> Guardar mesa </button>
+                </div>
+                <div class="cont-btn" *ngIf="mesa.id">
+                    <button type="button" class="btn btn-outline-danger btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                    <button type="button" class="btn btn-estilo btn-enviar" [disabled]="!formMesa.form.valid" (click)="guardarMesa()"> Guardar cambios </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #modalQR let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Código QR</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+            <div class="qrcodeImage">
+                <qrcode [elementType]="elementType" [level]="level" [qrdata]="qrdata" [scale]="scale" [width]="width"></qrcode>
+            </div>
+        </kendo-pdf-export>
+    </div>
+    <div class="modal-footer">
+        <button type="button" id="button" style="width: 100%;" (click)="pdf.saveAs('codigoqrmesa.pdf')" class="btn btn-info btn-estilo"> Exportar como PDF </button>
+    </div>
+</ng-template>

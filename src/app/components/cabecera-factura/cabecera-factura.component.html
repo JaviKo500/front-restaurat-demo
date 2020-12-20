@@ -1,0 +1,50 @@
+<div class="container mt-4 " style="padding-top: 15px;">
+    <form class="form mt-4 mb-4 " #formCabecera="ngForm">
+        <h5>Datos del Restaurante</h5>
+        <hr>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="nombre">Nombre Restaurante:</label>
+                <input type="text" name="nombre" class="form-control" id="nombre" autocomplete="off" #nombre="ngModel" [(ngModel)]="cabecera.nombreRestaurante" required minlength="2">
+                <div class="sms-alert" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+                    <div class="sms-alert-required" *ngIf="nombre.errors.required">
+                        <small class="p-invalid">Ingrese nombre del restaurante</small>
+                    </div>
+                    <div class="sms-alert-required" *ngIf="nombre.errors.minlength">
+                        <small class="p-invalid">Ingrese al menos 2 caracteres </small>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="ruc">Ruc:</label>
+                <input type="number" name="ruc" class="form-control" id="ruc" autocomplete="off" [(ngModel)]="cabecera.ruc" #ruc="ngModel" required minlength="13">
+                <div class="sms-alert" *ngIf="ruc.invalid && (ruc.dirty || ruc.touched)">
+                    <div class="sms-alert-required" *ngIf="ruc.errors.required">
+                        <small class="p-invalid">Ingrese ruc del restaurante</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="telefono">Teléfono:</label>
+                <input type="number" name="telefono" class="form-control" id="telefono" autocomplete="off" [(ngModel)]="cabecera.telefono" #telefono="ngModel" required minlength="5">
+                <div class="sms-alert" *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)">
+                    <div class="sms-alert-required" *ngIf="telefono.errors.required">
+                        <small class="p-invalid">Ingrese teléfono del restaurante</small>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="celular">Celular:</label>
+                <input type="number" name="celular" class="form-control" id="celular" autocomplete="off" [(ngModel)]="cabecera.celular" #celular="ngModel" required minlength="10">
+                <div class="sms-alert" *ngIf="celular.invalid && (celular.dirty || celular.touched)">
+                    <div class="sms-alert-required" *ngIf="celular.errors.required">
+                        <small class="p-invalid">Ingrese celular del restaurante</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" (click)="actualizar()" class="btn  btn-block btn-estilo mt-3" [disabled]="!formCabecera.form.valid">Actualizar</button>
+    </form>
+</div>

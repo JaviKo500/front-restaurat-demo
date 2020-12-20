@@ -1,0 +1,145 @@
+<!-- Toast -->
+<p-toast [style]="{width: '400px', 'font-size':'13px'}"></p-toast>
+
+<form action="" #formProducto="ngForm" (ngSubmit)="enviarDatosProducto(formProducto)">
+    <div class="contenedor">
+        <div class="card contenedor-form">
+            <div class="p-fluid p-formgrid p-grid">
+                <!-- Producto -->
+                <div class="p-field p-col-12 p-md-6">
+                    <label for="proNombre">Nombre Producto</label>
+                    <input name="proNombre" type="text" pInputText [(ngModel)]="producto.proNombre" #proNombre="ngModel" required minlength="2" autocomplete="off" [ngClass]="{'p-invalid':proNombre.invalid && (proNombre.dirty || proNombre.touched)}">
+                    <div class="sms-alert" *ngIf="proNombre.invalid && (proNombre.dirty || proNombre.touched)">
+                        <div class="sms-alert-required" *ngIf="proNombre.errors.required">
+                            <small class="p-invalid">Ingresar un nombre</small>
+                        </div>
+                        <div class="sms-alert-length" *ngIf="proNombre.errors.minlength">
+                            <small class="p-invalid">Ingresar al menos 2 caracteres</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- Categoria -->
+                <div class="p-field p-col-12 p-md-6">
+                    <label for="categoria">Categoría</label>
+                    <div class="cont-categoria">
+                        <div class="cont-categoria-input">
+                            <p-dropdown inputId="categoria" name="selectCategoria" [options]="categorias" #selectCAt="ngModel" [(ngModel)]="producto.categoria" placeholder="Categoría" optionLabel="nombreCat" required></p-dropdown>
+                        </div>
+                        <div class="cont-categoria-btn">
+                            <button pButton pRipple pTooltip="Agregar otra categoría" tooltipPosition="top" type="button" icon="fas fa-plus" class="p-button-rounded p-button-secondary" (click)="categoriaModal(modalCategoria)"></button>
+                        </div>
+                    </div>
+                    <div class="sms-alert" *ngIf="selectCAt.touched">
+                        <div class="sms-alert-required" *ngIf="!producto.categoria">
+                            <small class="p-invalid">Seleccione una categoria</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- Precio -->
+                <div class="p-field p-col-12 p-md-6">
+                    <label for="precio">Precio</label>
+                    <input name="precio" type="number" pInputText [(ngModel)]="producto.precio" #precio="ngModel" required minlength="1" [ngClass]="{'p-invalid':precio.invalid && (precio.dirty || precio.touched)}">
+                    <div class="sms-alert" *ngIf="precio.invalid && (precio.dirty || precio.touched) && producto.precio<=0">
+                        <div class="sms-alert-required" *ngIf="precio.errors.required">
+                            <small class="p-invalid">Ingrese un Precio</small>
+                        </div>
+                        <div class="sms-alert length" *ngIf="precio.errors.minlength">
+                            <small class="p-invalid">Ingrese un precio mayor a cero</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- Descripcion del producto -->
+                <div class="p-field p-col-12">
+                    <label for="descripcion">Descripción</label>
+                    <textarea name="descripcion" type="text" rows="4" pInputTextarea [(ngModel)]="producto.descripcion" #descripcion="ngModel" required minlength="2"></textarea>
+                    <div class="sms-alert" *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched)">
+                        <div class="sms-alert-required" *ngIf="descripcion.errors.required">
+                            <small class="p-invalid">Ingrese una descripción válida</small>
+                        </div>
+                        <div class="sms-alert-length" *ngIf="descripcion.errors.minlength">
+                            <small class="p-invalid">Ingrese al menos 2 caracteres</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Imagen -->
+        <div class="card contenedor-img">
+            <div class="contenedor-img-vista" *ngIf="!producto.imagen ||  banderaEditarImg">
+                <div class="img-vista" *ngIf="!img_url">
+                    <img src="../../../assets/multimedia/icons/addImg.png" alt="">
+                </div>
+            </div>
+            <div class="contenedor-img-vista" *ngIf="producto.imagen && !img_url && !banderaEditarImg">
+                <div class="img-vista" [ngStyle]="{'border':'0px'}">
+                    <img src="{{URL}}producto/img/{{producto.imagen}}" class="img-vista-producto" alt=" ">
+                </div>
+            </div>
+            <div class="contenedor-img-vista" *ngIf="img_url">
+                <div class="img-vista" [ngStyle]="{'border':'0px'}">
+                    <img [src]="img_url " *ngIf="img_url" class="img-vista-producto" alt=" ">
+                </div>
+            </div>
+
+            <div class="btn-img-pro">
+                <input type="file" name="imgPro " id="imgPro " class="btn-img " accept="image/* " (change)=" onChange($event) "> Subir imagen
+            </div>
+        </div>
+        <div class="card enviarDatos" *ngIf="!producto.id; else editar">
+            <div class="update">
+                <div class="btn-can">
+                    <button type="button" [routerLink]="['/productos']" class="btn btn-outline-danger btn-cancelar">Cancelar</button>
+                </div>
+                <div class="clean"></div>
+                <div>
+                    <input type="submit" class="btn-save" value="Guardar producto " [ngClass]="{'btn-save-disablesd' :!formProducto.form.valid||!bandera}" [disabled]="!formProducto.form.valid || !bandera">
+                </div>
+            </div>
+        </div>
+        <ng-template #editar>
+            <div class="card enviarDatos">
+                <div class="update">
+                    <div class="btn-can">
+                        <button type="button" [routerLink]="['/productos']" class="btn btn-outline-danger btn-cancelar">Cancelar</button>
+                    </div>
+                    <div class="clean"></div>
+                    <div>
+                        <input type="submit" class="btn-save2" value="Actualizar producto " [ngClass]="{'btn-save-disabled' :!formProducto.form.valid}" [disabled]="!formProducto.form.valid">
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</form>
+<ng-template #modalCategoria let-modal>
+    <form action="" #formCategoria="ngForm" (ngSubmit)="enviarDatosCategorias(formCategoria)">
+        <div class="modal-header">
+            <h4 class="modal-title">Agregar Categoría</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-form">
+                <div class="p-fluid p-formgrid p-grid">
+
+                    <label for="proNombre">Nombre: </label>
+                    <input name="nombreCat" type="text" pInputText [(ngModel)]="categoria.nombreCat" #nombreCat="ngModel" required minlength="3" [ngClass]="{'p-invalid':nombreCat.invalid && (nombreCat.dirty || nombreCat.touched)}">
+                    <div class="sms-alert" *ngIf="nombreCat.invalid && (nombreCat.dirty || nombreCat.touched)">
+                        <div class="sms-alert-required" *ngIf="nombreCat.errors.required">
+                            <small class="p-invalid">Ingresar un nombre</small>
+                        </div>
+                        <div class="sms-alert-length" *ngIf="nombreCat.errors.minlength">
+                            <small class="p-invalid">Ingresar al menos 3 caracteres</small>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button pButton pRipple type="submit" label="Agregar" class="p-button-rounded texto-save"></button>
+            <button pButton pRipple type="button" label="Cancelar" class="p-button-rounded p-button-outlined p-button-danger texto" (click)="cerrarModal(formCategoria)"></button>
+        </div>
+    </form>
+</ng-template>

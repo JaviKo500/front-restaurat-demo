@@ -1,0 +1,160 @@
+.contenedor {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.cont-table {
+    width: 95%;
+}
+
+.cont-header {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 20% 20% 25% 25% 10%;
+    grid-template-areas: "numero nombre estado editar detalle";
+    text-align: center;
+}
+
+.cont-header>.cont-header .t1,
+.cont-header .t2,
+.cont-header .t3,
+.cont-header .t4 .cont-header .t5 {
+    margin: 0;
+    padding: 0;
+}
+
+.cont-header .t1 {
+    grid-area: numero;
+}
+
+.cont-header .t2 {
+    grid-area: nombre;
+}
+
+.cont-header .t3 {
+    grid-area: estado;
+}
+
+.cont-header .t4 {
+    grid-area: editar;
+}
+
+.cont-header .t5 {
+    grid-area: detalle;
+}
+
+.cont-flex {
+    display: flex;
+    align-items: center;
+}
+
+.cont-table-descripcion {
+    width: 100%;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 20% 20% 25% 25% 10%;
+    grid-template-areas: "c1 c2 c3 c4 c5";
+    text-align: center;
+}
+
+.cont-header>.cont-table-descripcion .c1,
+.cont-table-descripcion .c2,
+.cont-table-descripcion .c3,
+.cont-table-descripcion .c4 {
+    margin: 0;
+    padding: 0;
+}
+
+.cont-table-descripcion .c1 {
+    grid-area: c1;
+}
+
+.cont-header .c2 {
+    grid-area: c2;
+}
+
+.cont-header .c3 {
+    grid-area: c3;
+}
+
+.cont-header .c4 {
+    grid-area: c4;
+}
+
+.cont-header .c5 {
+    grid-area: c5;
+}
+
+.btn-edit {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-editar {
+    background-color: black;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.cont-flex-buscar {
+    width: 40%;
+}
+
+.cont-primario {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.label-ced {
+    padding-left: 1.6%;
+}
+
+.cont-buscar {
+    width: 100%;
+}
+
+input[type="search"] {
+    width: 100%;
+}
+
+.btn-ver {
+    background-color: black;
+}
+
+.cont-total {
+    width: 100%;
+    padding: 10px 0 0 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cont-header-flex {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+
+.cont-date {
+    width: 30%;
+}
+
+.piker-date {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-dark {
+    background-color: black;
+}
+
+.btn-buscar {
+    height: 40px;
+    width: 20%;
+}

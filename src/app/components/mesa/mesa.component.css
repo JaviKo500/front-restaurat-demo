@@ -1,0 +1,82 @@
+kendo-pdf-export {
+    font-family: "DejaVu Sans", "Arial", sans-serif;
+    font-size: 12px;
+}
+
+body {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.contenedor {
+    width: 90%;
+}
+
+.cont-menu {
+    width: 100%;
+    background: url("../../../assets/multimedia/images/pattern.png");
+    background-attachment: fixed;
+    color: black;
+    padding: 5px 5px 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.buscar {
+    width: 30.5%;
+}
+
+.flex-style {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.label-buscar {
+    width: 10%;
+}
+
+.input-buscar {
+    width: 80%;
+}
+
+.qrcodeImage {
+    display: flex;
+    justify-content: center;
+}
+
+#btn-add-mesas {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 200px;
+}
+
+.btn-estilo {
+    background-color: black;
+    color: white;
+}
+
+.btn-tamano {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.cont-btn {
+    width: 100%;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-cancelar {
+    width: 40%;
+    border-color: transparent;
+}
+
+.btn-enviar {
+    width: 40%;
+}

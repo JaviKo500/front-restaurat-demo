@@ -1,0 +1,6 @@
+<div>
+    <app-header></app-header>
+</div>
+<div [ngClass]="{'contenido':authservice.isAuthenticated()}">
+    <router-outlet></router-outlet>
+</div>

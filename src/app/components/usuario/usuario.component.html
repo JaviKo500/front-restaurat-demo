@@ -1,0 +1,57 @@
+<!-- toast -->
+<p-toast [style]="{width: '400px', 'font-size':'13px'}"></p-toast>
+<div class="contenedor">
+    <div class="cont-table">
+        <p-dataView #dv [value]="usuarios" [paginator]="true" [rows]="10" filterBy="cedula" [sortField]="sortField" [sortOrder]="sortOrder" [style]="{'background-color': 'black'}">
+            <p-header>
+                <div class="ui-helper-clearfix">
+                    <div class="p-grid cont-search">
+                        <label class="label-ced" for="proNombre">Buscar por Cédula:</label>
+                        <div class="p-col-6 p-md-4  cont-primario">
+                            <div class="cont-buscar">
+                                <input type="search" placeholder="ejem: 01055..6" class="input-buscar" pInputText (input)="dv.filter($event.target.value)">
+                            </div>
+                            <div class="btn-add">
+                                <button pButton pRipple pTooltip="Agregar un nuevo usuario" tooltipPosition="top" type="button" icon="fas fa-user-plus" [routerLink]="[('/usuario/form')]" class="p-button-rounded p-button-secondary  p-button-outlined"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- editado -->
+                <div class="header-title">
+                    <div class="cont-header">
+                        <div class="t1"><b>Cédula</b></div>
+                        <div class="t2"><b>Nombre</b></div>
+                        <div class="t3"><b>Usuario</b></div>
+                        <div class="t4"><b>Teléfono</b></div>
+                        <div class="t5"><b>Email</b></div>
+                        <div class="t6"><b>Rol</b></div>
+                        <div class="t7"><b>Género</b></div>
+                        <div class="t8"><b></b></div>
+                        <div class="t9"><b></b></div>
+                    </div>
+                </div>
+            </p-header>
+            <ng-template let-usuario pTemplate="listItem">
+                <div class="cont-flex cont-table-descripcion">
+                    <div class="c1"><b>{{usuario.cedula}}</b></div>
+                    <div class="c2">{{usuario.nombre}}</div>
+                    <div class="c3">{{usuario.username}}</div>
+                    <div class="c4">{{usuario.telefono}}</div>
+                    <div class="c5">{{usuario.email}}</div>
+                    <div class="c6">{{usuario.roles[0].nombre}}</div>
+                    <div class="c7">{{usuario.sexo.tipo}}</div>
+                    <div class="c8" pTooltip="Cambiar estado usuario" tooltipPosition="top">
+                        <p-toggleButton [(ngModel)]="usuario.estado" (click)="actualizarUsuario(usuario)" onLabel="Habilitado" offLabel="Deshabilitado" offIcon="pi pi-times" [style]="{'width':'150px','height':'40px'}"></p-toggleButton>
+                    </div>
+                    <div class="c9">
+                        <div class="btn-edit">
+                            <button pTooltip="Editar usuario" tooltipPosition="top" class="btn btn-dark btn-editar" [routerLink]="['/usuario/edit', usuario.id]"> <i class="far fa-edit"></i></button>
+                        </div>
+
+                    </div>
+                </div>
+            </ng-template>
+        </p-dataView>
+    </div>
+</div>

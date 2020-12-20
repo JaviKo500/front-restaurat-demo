@@ -1,0 +1,271 @@
+.contenedor {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.cont-table {
+    width: 95%;
+}
+
+.cont-header {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 9% 9% 8% 8% 12% 12% 18% 9% 8% 7%;
+    grid-template-areas: "t1 t2 t3 t4 t5 t6 t7 t8 t9 t10";
+    padding: 0;
+}
+
+.cont-header>.cont-header .t1,
+.cont-header .t2,
+.cont-header .t3,
+.cont-header .t4,
+.cont-header .t5,
+.cont-header .t6,
+.cont-header .t7,
+.cont-header .t8,
+.cont-header .t9,
+.cont-header .t10 {
+    margin: 0;
+    padding: 0;
+}
+
+.cont-header .t1 {
+    grid-area: t1;
+}
+
+.cont-header .t2 {
+    grid-area: t2;
+}
+
+.cont-header .t3 {
+    grid-area: t3;
+}
+
+.cont-header .t4 {
+    grid-area: t4;
+}
+
+.cont-header .t5 {
+    grid-area: t5;
+}
+
+.cont-header .t6 {
+    grid-area: t6;
+}
+
+.cont-header .t7 {
+    grid-area: t7;
+}
+
+.cont-header .t8 {
+    grid-area: t8;
+}
+
+.cont-header .t9 {
+    grid-area: t9;
+}
+
+.cont-header .t10 {
+    grid-area: t10;
+}
+
+.t2 {
+    display: flex;
+    justify-content: center;
+}
+
+.t4 {
+    display: flex;
+    justify-content: center;
+}
+
+.t5 {
+    text-align: center;
+}
+
+.t6 {
+    text-align: center;
+}
+
+.t7 {
+    text-align: center;
+}
+
+.cont-flex {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.cont-table-descripcion {
+    display: grid;
+    grid-template-columns: 10% 10% 8% 8% 12% 12% 18% 10% 8% 3%;
+    grid-template-areas: "c1 c2 c3 c4 c5 c6 c7 c8 c9 c10";
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.cont-header>.cont-table-descripcion .c1,
+.cont-table-descripcion .c2,
+.cont-table-descripcion .c3,
+.cont-table-descripcion .c4,
+.cont-table-descripcion .c5,
+.cont-table-descripcion .c6,
+.cont-table-descripcion .c7,
+.cont-table-descripcion .c8,
+.cont-table-descripcion .c9,
+.cont-table-descripcion .c10 {
+    margin: 0;
+    padding: 0;
+}
+
+.cont-header .c1 {
+    grid-area: c1;
+}
+
+.cont-header .c2 {
+    grid-area: c2;
+}
+
+.cont-header .c3 {
+    grid-area: c3;
+}
+
+.cont-header .c4 {
+    grid-area: c4;
+}
+
+.cont-header .c5 {
+    grid-area: c5;
+}
+
+.cont-header .c6 {
+    grid-area: c6;
+}
+
+.cont-header .c7 {
+    grid-area: c7;
+}
+
+.cont-header .c8 {
+    grid-area: c8;
+}
+
+.cont-header .c9 {
+    grid-area: c9;
+}
+
+.cont-header .c10 {
+    grid-area: c10;
+}
+
+.c1 {
+    padding-left: 15px;
+}
+
+.c2 {
+    display: flex;
+    justify-content: center;
+}
+
+.c3 {
+    display: flex;
+    justify-content: center;
+}
+
+.c4 {
+    display: flex;
+    justify-content: center;
+}
+
+.c7 {
+    text-align: center;
+    height: auto;
+    word-wrap: break-word;
+}
+
+.btn-estado {
+    width: 100%;
+    height: 40px;
+}
+
+.btn-deshabilitado {
+    width: 100%;
+    height: 40px;
+    cursor: not-allowed;
+}
+
+.btn-edit {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-editar {
+    background-color: black;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.cont-primario {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.label-ced {
+    padding-left: 1.6%;
+}
+
+.cont-buscar {
+    width: 60%;
+}
+
+input[type="search"] {
+    width: 100%;
+}
+
+.flex-cont {
+    width: 100%;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 50% 50%;
+    grid-template-areas: "buscar fechas";
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+.flex-cont>.flex-cont .cont-search,
+.flex-cont .cont-date {
+    margin: 0;
+    padding: 0;
+}
+
+.flex-cont .cont-search {
+    grid-area: buscar;
+}
+
+.flex-cont .cont-date {
+    grid-area: fechas;
+}
+
+.cont-date-picker {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-dark {
+    background-color: black;
+}
+
+.flex-style {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-estilo {
+    background-color: black;
+    color: white;
+}

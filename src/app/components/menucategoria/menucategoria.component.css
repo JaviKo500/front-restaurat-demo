@@ -1,0 +1,219 @@
+.contenedor {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.cont-buscar {
+    width: 60%;
+}
+
+.input-buscar {
+    width: 50%;
+}
+
+.cont-table-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cont-table {
+    width: 90%;
+}
+
+.cont-table-data {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cont-table-data {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 20% 65% 15%;
+    grid-template-areas: "img data estado";
+    padding: 5px;
+}
+
+.cont-table-data>.cont-table-data .cont-table-img,
+.cont-table-data .cont-table-descripcion,
+.cont-table-data .cont-table-estado {
+    margin: 0;
+    padding: 0;
+}
+
+.cont-table-data .cont-table-img {
+    grid-area: img;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+.cont-table-data .cont-table-descripcion {
+    grid-area: data;
+    /* display: flex;
+    align-items: center; */
+}
+
+.cont-table-data .cont-table-estado {
+    grid-area: estado;
+    display: flex;
+    justify-content: center;
+}
+
+
+/* grid tabla header */
+
+.cont-table-header {
+    display: grid;
+    grid-template-columns: 20% 22% 12% 17% 15% 12.5% 1.5%;
+    grid-template-areas: "img datos precio categoria estado editar vacia";
+}
+
+.cont-table-header .tit-datos,
+.cont-table-header .tit-img,
+.cont-table-header .tit-precio,
+.cont-table-header .tit-editar,
+.cont-table-header .tit-categoria,
+.cont-table-header .tit-estado .cont-table-header .tit-vacia {
+    margin: 0;
+    padding: 0;
+}
+
+.cont-table-header .tit-datos,
+.cont-table-header .tit-precio,
+.cont-table-header .tit-categoria,
+.cont-table-header .tit-editar,
+.cont-table-header .tit-estado,
+.cont-table-header .tit-img {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cont-table-header .tit-editar {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cont-table-header .tit-img {
+    grid-area: img;
+    padding: 10px;
+}
+
+.cont-table-header .tit-datos {
+    grid-area: datos;
+    padding: 10px;
+}
+
+.cont-table-header .tit-precio {
+    grid-area: precio;
+    padding: 10px;
+}
+
+.cont-table-header .tit-categoria {
+    grid-area: categoria;
+    padding: 10px;
+}
+
+.cont-table-header .tit-estado {
+    grid-area: estado;
+    padding: 10px;
+}
+
+.cont-table-header .tit-editar {
+    grid-area: editar;
+    padding: 10px;
+}
+
+.cont-table-header .tit-vacia {
+    grid-area: vacia;
+    min-height: 47px;
+    padding: 10px;
+}
+
+
+/* grid para los datos de la tabla */
+
+.cont-table-descripcion {
+    display: grid;
+    grid-template-columns: 30% 20% 25% 25%;
+    grid-template-rows: repeat(2, auto);
+    grid-template-areas: "nombre precio categoria estado" "descripcion precio categoria estado";
+    padding: 5px;
+}
+
+.cont-table-descripcion>.cont-table-descripcion .nombre,
+.cont-table-descripcion .precio,
+.cont-table-descripcion .categoria {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cont-table-descripcion .estado {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cont-table-descripcion .nombre {
+    text-align: center;
+    grid-area: nombre;
+}
+
+.cont-table-descripcion .precio {
+    text-align: center;
+    grid-area: precio;
+}
+
+.cont-table-descripcion .categoria {
+    text-align: center;
+    grid-area: categoria;
+}
+
+.cont-table-descripcion .estado {
+    grid-area: estado;
+}
+
+.cont-table-descripcion .descripcion {
+    text-align: center;
+    grid-area: descripcion;
+}
+
+.btn-editar {
+    background-color: black;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.cont-primario {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.label-ced {
+    padding-left: 1.6%;
+}
+
+.cont-buscar {
+    width: 75%;
+}
+
+input[type="search"] {
+    width: 100%;
+}

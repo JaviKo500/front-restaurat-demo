@@ -1,0 +1,144 @@
+body {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.contenedor {
+    width: 90%;
+}
+
+.tabla-pedidos {
+    margin-top: 20px;
+}
+
+.float-right {
+    width: 100%;
+    background: url("../../../assets/multimedia/images/pattern.png");
+    background-attachment: fixed;
+    color: black;
+}
+
+.thead-dark1 {
+    background-color: black !important;
+    color: white;
+    margin: 0;
+}
+
+.form-inline {
+    width: 100%;
+}
+
+.flex-style {
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.estadosSelect {
+    width: 30%;
+}
+
+.buscar {
+    width: 28%;
+}
+
+.buscar [type="text"] {
+    width: 79%;
+}
+
+.btn-buscar {
+    cursor: pointer;
+    width: 10%;
+}
+
+.cont-total {
+    width: 100%;
+    padding: 10px 0 0 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-estilo {
+    background-color: black;
+    color: white;
+}
+
+
+/* Estilos para el recibo */
+
+.cont-recibo p {
+    margin: 0;
+    padding: 0;
+}
+
+.cont-rec-titulos {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cont-rec-items {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cont-rec-table {
+    border-top: transparent;
+}
+
+.cont-rec-cliente {
+    display: flex;
+    justify-content: left;
+}
+
+.cont-rec-cliente p {
+    padding-right: 25%;
+}
+
+.cont-rec-total {
+    padding-right: 15%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cont-rec-pie {
+    display: flex;
+    justify-content: left;
+}
+
+.cont-rec-pie p {
+    padding-right: 10%;
+    padding-left: 10%;
+}
+
+.btn-rec {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.btn-print {
+    color: #fff;
+    width: 40%;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 auto 0;
+    height: 50px;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.btn-cancelar {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 auto 0;
+    height: 50px;
+    overflow: hidden;
+    padding: 10px;
+    text-align: center;
+    width: 40%;
+    border-color: transparent;
+}

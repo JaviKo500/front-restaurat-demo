@@ -1,0 +1,150 @@
+<body>
+    <p-toast [style]="{width: '400px', 'font-size':'13px'}"></p-toast>
+    <div class="container p-fluid">
+        <div *ngIf="!arqueoCaja.id; else titulo2">
+            <h2>{{title}}</h2>
+        </div>
+        <ng-template #titulo2>
+            <div>
+                <h2>{{title2}}</h2>
+            </div>
+        </ng-template>
+        <hr>
+        <form action="" class="form-grid" #formArqueo="ngForm">
+            <div class="cont-form">
+                <div class="cont-colum1">
+                    <label for="caja">Caja</label>
+                    <div class="cont-caja">
+                        <div class="cont-caja-select">
+
+                            <div class="cont-caja1">
+                                <div class="cont-caja-input">
+                                    <p-dropdown inputId="caja" class="selects" name="caja" [options]="cajasHabilitadas" #caja="ngModel" [(ngModel)]="arqueoCaja.caja" placeholder="Caja" optionLabel="nombreCaja" required></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="sms-alert" *ngIf="caja.touched">
+                                <div class="sms-alert-required" *ngIf="!arqueoCaja.caja">
+                                    <small class="p-invalid">Seleccione una caja</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cont-modal-add-caja">
+                            <button pButton pRipple pTooltip="Agregar otra caja" tooltipPosition="top" type="button" icon="fas fa-cash-register" class="p-button-rounded p-button-secondary" (click)="cajaModal(modalCaja)"></button>
+                        </div>
+                    </div>
+                    <label for="usuario">Usuario</label>
+                    <div class="cont-usuario">
+                        <div class="cont-usuario-select">
+                            <div class="cont-usuario1">
+                                <div class="cont-usuario-input">
+                                    <p-dropdown inputId="usuario" class="selects" name="usuario" [options]="usuarios" #usuario="ngModel" [(ngModel)]="arqueoCaja.usuario" placeholder="Usuario" optionLabel="nombre" required></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="sms-alert" *ngIf="usuario.touched">
+                                <div class="sms-alert-required" *ngIf="!arqueoCaja.usuario">
+                                    <small class="p-invalid">Seleccione un usuario</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cont-modal-add-caja">
+                            <button pButton pRipple pTooltip="Agregar otro usuario" tooltipPosition="top" type="button" icon="fas fa-user" class="p-button-rounded p-button-secondary" [routerLink]="[('/usuario/form')]"></button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="cont-colum2">
+                    <div class="cont-monto">
+                        <label for="montoInicial">Monto Inicial</label>
+                        <input name="montoInicial" type="number" pInputText [(ngModel)]="arqueoCaja.montoInicial" #montoInicial="ngModel" required minlength="1" [ngClass]="{'p-invalid':montoInicial.invalid && (montoInicial.dirty || montoInicial.touched)}">
+                        <div class="sms-alert" *ngIf="montoInicial.invalid && (montoInicial.dirty || montoInicial.touched)">
+                            <div class="sms-alert-required" *ngIf="montoInicial.errors.required">
+                                <small class="p-invalid">Ingrese una cantidad de dinero</small>
+                            </div>
+                            <div class="sms-alert length" *ngIf="montoInicial.errors.minlength">
+                                <small class="p-invalid">Ingrese un precio mayor a cero</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cont-descripcion">
+                        <label for="descripcion">Descripción</label>
+                        <textarea name="descripcion" type="text" rows="4" pInputTextarea [(ngModel)]="arqueoCaja.descripcion" #descripcion="ngModel" required minlength="2" [ngClass]="{'p-invalid':descripcion.invalid && (descripcion.dirty || descripcion.touched)}"></textarea>
+                        <div class="sms-alert" *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched)">
+                            <div class="sms-alert-required" *ngIf="descripcion.errors.required">
+                                <small class="p-invalid">Ingrese una descripción válida</small>
+                            </div>
+                            <div class="sms-alert-length" *ngIf="descripcion.errors.minlength">
+                                <small class="p-invalid">Ingrese al menos 2 caracteres</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="cont-btns">
+                <div class="btn" *ngIf="!arqueoCaja.id; else editar">
+                    <div class="btn-can">
+                        <button type="button" [routerLink]="['/arqueo/lista']" class="btn btn-outline-danger btn-cancelar">Cancelar</button>
+                    </div>
+                    <div class="clean"></div>
+                    <div>
+                        <button type="button" (click)="GuardarDatosArqueoCaja()" class="btn-save" [ngClass]="{'btn-save-disabled' :!formArqueo.form.valid}" [disabled]="!formArqueo.form.valid">{{btn_guardar}}</button>
+                    </div>
+                </div>
+                <ng-template #editar>
+                    <div class="btn">
+                        <div class="btn-can">
+                            <button type="button" [routerLink]="['/arqueo/lista']" class="btn btn-outline-danger btn-cancelar">Cancelar</button>
+                        </div>
+                        <div class="clean"></div>
+                        <div>
+                            <button type="button" class="btn-save" (click)="actualizarDatosArqueo()" [ngClass]="{'btn-save-disabled' :!formArqueo.form.valid}" [disabled]="!formArqueo.form.valid">{{btn_editar}}</button>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </form>
+    </div>
+
+    <ng-template #modalCaja let-modal>
+        <form action="" #formCaja="ngForm">
+            <div class="modal-header">
+                <h4 class="modal-title">Agregar Caja</h4>
+                <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-form">
+                    <div class="p-fluid p-formgrid p-grid">
+                        <label for="numeroCaja">Número caja </label>
+                        <input name="numeroCaja" type="text" pInputText [(ngModel)]="cajaAdd.numeroCaja" #numeroCaja="ngModel" required minlength="1" [ngClass]="{'p-invalid':numeroCaja.invalid && (numeroCaja.dirty || numeroCaja.touched)}" autocomplete="off">
+                        <div class="sms-alert" *ngIf="numeroCaja.invalid && (numeroCaja.dirty || numeroCaja.touched)">
+                            <div class="sms-alert-required" *ngIf="numeroCaja.errors.required">
+                                <small class="p-invalid">Ingresar un numero</small>
+                            </div>
+                            <div class="sms-alert-length" *ngIf="numeroCaja.errors.minlength">
+                                <small class="p-invalid">Ingresar al menos 1 caracteres</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-fluid p-formgrid p-grid">
+                    <label for="nombreCanombreCajaja">Nombre caja </label>
+                    <input name="nombreCaja" type="text" pInputText [(ngModel)]="cajaAdd.nombreCaja" #nombreCaja="ngModel" required minlength="3" [ngClass]="{'p-invalid':nombreCaja.invalid && (nombreCaja.dirty || nombreCaja.touched)}" autocomplete="off">
+                    <div class="sms-alert" *ngIf="nombreCaja.invalid && (nombreCaja.dirty || nombreCaja.touched)">
+                        <div class="sms-alert-required" *ngIf="nombreCaja.errors.required">
+                            <small class="p-invalid">Ingresar un nombre</small>
+                        </div>
+                        <div class="sms-alert-length" *ngIf="nombreCaja.errors.minlength">
+                            <small class="p-invalid">Ingresar al menos 3 caracteres</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button pButton pRipple type="submit" label="Agregar" class="p-button-rounded texto-save btn-estilo" (click)="guardarCaja()"></button>
+                <button pButton pRipple type="button" label="Cancelar" class="p-button-rounded p-button-outlined p-button-danger texto" (click)="cerrarModal()"></button>
+            </div>
+        </form>
+    </ng-template>
+</body>

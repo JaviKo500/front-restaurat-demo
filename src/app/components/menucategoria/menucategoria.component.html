@@ -1,0 +1,62 @@
+<!-- toast -->
+<p-toast [style]="{width: '400px', 'font-size':'13px'}"></p-toast>
+<div class="contenedor">
+    <div class="cont-table">
+        <p-dataView #dv [value]="productosByCategoria" [paginator]="true" [rows]="3" filterBy="proNombre" [sortField]="sortField" [sortOrder]="sortOrder">
+            <p-header>
+                <div class="ui-helper-clearfix">
+                    <div class="p-grid cont-search">
+                        <label class="label-ced" for="proNombre">Buscar por nombre del producto:</label>
+                        <div class="p-col-6 p-md-4  cont-primario">
+                            <div class="cont-buscar">
+                                <input type="search" placeholder="ejem: Papas" class="input-buscar" pInputText (input)="dv.filter($event.target.value)">
+                            </div>
+                            <div class="btn-add" *ngIf="authservice.hasRole('ROLE_ADMIN')">
+                                <button pButton pRipple pTooltip="Agregar un producto" tooltipPosition="top" type="button" icon="fas fa-hamburger" [routerLink]="[('/productos/agregar')]" class="p-button-rounded p-button-secondary  p-button-outlined"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- editado -->
+                <div>
+                    <table class="table table-striped ">
+                        <thead>
+                            <tr class="cont-table-header">
+                                <th scope="col" class="tit-img">Img</th>
+                                <th scope="col" class="tit-datos">Datos</th>
+                                <th scope="col" class="tit-precio">Precio</th>
+                                <th scope="col" class="tit-categoria">Categoría</th>
+                                <th scope="col" class="tit-estado">Estado producto </th>
+                                <th scope="col" class="tit-editar" *ngIf="authservice.hasRole('ROLE_ADMIN')">Editar </th>
+                                <th scope="col" class="tit-vacia" *ngIf="authservice.hasRole('ROLE_ADMIN')"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </p-header>
+            <ng-template let-producto pTemplate="listItem">
+                <!-- editado -->
+                <div class="cont-table-data">
+                    <div class="cont-table-img">
+                        <img src="{{url}}producto/img/{{producto.imagen}}" width="100px" height="100px" alt="not found">
+                    </div>
+                    <div class="cont-table-descripcion">
+
+                        <div class="nombre"><b>{{producto.proNombre.toUpperCase()}}</b></div>
+                        <div class="precio"> <b>{{producto.precio}}</b></div>
+                        <div class="descripcion"> <b>Descripción</b>{{' : '+ producto.descripcion}}</div>
+                        <div class="categoria"><b>{{producto.categoria.nombreCat.toUpperCase()}}</b></div>
+                        <div class="estado">
+                            <p-toggleButton [(ngModel)]="producto.estado" (click)="actualizarProducto(producto)" onLabel="Habilitado" offLabel="Deshabilitado" offIcon="pi pi-times" [style]="{'width':'150px'}"></p-toggleButton>
+                        </div>
+
+
+                    </div>
+                    <div class="cont-table-estado" *ngIf="authservice.hasRole('ROLE_ADMIN')">
+                        <button class="btn btn-success btn-editar" [routerLink]="['/productos/editar', producto.id]"><i class="far fa-edit"></i></button>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dataView>
+    </div>
+</div>

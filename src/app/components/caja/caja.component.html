@@ -1,0 +1,172 @@
+<div class="contenedor">
+    <div class="cont-table">
+        <p-dataView #dv [value]="arqueosCajas" [paginator]="true" [rows]="10" filterBy="id" [sortField]="sortField" [sortOrder]="sortOrder" [style]="{'background-color': 'black'}">
+            <p-header>
+                <div class="ui-helper-clearfix flex-cont">
+                    <div class="p-grid cont-search">
+                        <label for="id">Buscar por Id:</label>
+                        <div class="cont-primario">
+                            <div class="cont-buscar">
+                                <input type="search" placeholder="ejem: 1" class="input-buscar" pInputText (input)="dv.filter($event.target.value)">
+                            </div>
+                            <div class="btn-add">
+                                <button pButton pRipple pTooltip="Abrir otro arqueo" tooltipPosition="top" type="button" icon="fas fa-wallet" [routerLink]="[('/caja/arqueo')]" class="p-button-rounded p-button-secondary"></button>
+                            </div>
+                            <button pButton pRipple pTooltip="Generar Reporte" tooltipPosition="top" type="button" icon="fas fa-print" class="p-button-rounded p-button-secondary" (click)="generarPdf()"></button>
+                        </div>
+                    </div>
+                    <div class="p-grid cont-date">
+                        <label for="id">Buscar por Rango de Fechas:</label>
+                        <div class="cont-date-picker">
+                            <form class="form-inline">
+                                <div class="form-group flex-style">
+                                    <div class="input-group">
+                                        <p-calendar [(ngModel)]="fechaIni" [name]="fechaIni" [showIcon]="true" [ngModelOptions]="{standalone: true}" inputId="fecha"></p-calendar>
+                                    </div>
+                                </div>
+                            </form>
+                            <form class="form-inline">
+                                <div class="form-group flex-style">
+                                    <div class="input-group">
+                                        <p-calendar [(ngModel)]="fechaFin" [name]="fechaFin" [showIcon]="true" [ngModelOptions]="{standalone: true}" inputId="fecha"></p-calendar>
+                                    </div>
+                                </div>
+                            </form>
+                            <button class="btn btn-dark btn-buscar" (click)="cargarArqueosEntreFechas()">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- editado -->
+                <div class="header-title">
+                    <div class="cont-header">
+                        <div class="t1"><b>Encargado</b></div>
+                        <div class="t2"><b>Caja</b></div>
+                        <div class="t3"><b>Monto inicial</b></div>
+                        <div class="t4"><b>Monto final</b></div>
+                        <div class="t5"><b>Fecha apertura</b></div>
+                        <div class="t6"><b>Fecha Cierre</b></div>
+                        <div class="t7"><b>Descripción</b></div>
+                        <div class="t8"><b></b></div>
+                        <div class="t9"><b></b></div>
+                        <div class="t10"><b></b></div>
+                    </div>
+                </div>
+            </p-header>
+            <ng-template let-arqueocaja pTemplate="listItem">
+                <div class="cont-flex cont-table-descripcion">
+                    <div class="c1"><b>{{arqueocaja.usuario.nombre}}</b></div>
+                    <div class="c2">{{arqueocaja.caja.nombreCaja}}</div>
+                    <div class="c3">{{arqueocaja.montoInicial}}</div>
+                    <div class="c4">{{arqueocaja.montoFinal}}</div>
+                    <div class="c5">{{arqueocaja.fechaApertura | date: 'dd/MM/yyyy hh:mm:ss'}}</div>
+                    <div class="c6">{{arqueocaja.fechaCierre | date: 'dd/MM/yyyy hh:mm:ss'}}</div>
+                    <div class="c7">{{arqueocaja.descripcion}}</div>
+                    <div class="c8">
+                        <!-- esta para que si esta cerrrada la caja este boton no aparesca -->
+                        <div class="cont-btn-edit" *ngIf="arqueocaja.estado; else desactivar">
+                            <button pTooltip="Cerrar caja" tooltipPosition="top" (click)="cerrarArqueoCaja(arqueocaja)" class="btn btn-dark btn-estado"> Cerrar caja</button>
+                        </div>
+                        <ng-template #desactivar>
+                            <button [disabled]="!arqueocaja.estado" pTooltip="Caja cerrada" tooltipPosition="top" class="btn btn-dark btn-deshabilitado"> Caja cerrada</button>
+                        </ng-template>
+                    </div>
+                    <div class="c9">
+                        <div class="btn-edit">
+                            <button pTooltip="Editar arqueo" *ngIf="arqueocaja.estado" tooltipPosition="top" class="btn btn-dark btn-editar" [routerLink]="['/caja/edit', arqueocaja.id]"> <i class="far fa-edit"></i></button>
+                        </div>
+                    </div>
+                    <div class="c10">
+                        <div class="btn-edit">
+                            <button pTooltip="Ver movimientos" tooltipPosition="top" (click)="detalleMovimientos(arqueocaja,detalleMovimientosUser)" class="btn btn-dark btn-editar"> <i class="far fa-eye"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dataView>
+    </div>
+
+    <ng-template #detalleMovimientosUser let-modal>
+        <div class="modal-header">
+            <div class="conflex">
+                <h4 class="modal-title">DETALLE DE LOS MOVIMIENTOS</h4>
+                <hr>
+                <div class="flex">
+                    <p>Monto inicial: <b>{{arqueo.montoInicial}}</b></p>
+                    <p>Monto final: <b>{{arqueo.montoFinal}}</b></p>
+                </div>
+            </div>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id Mov</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Tipo Pago</th>
+                        <th scope="col">Monto</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Fecha Movimiento</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of arqueo.movimientos">
+                        <th scope="row">{{item.id}}</th>
+                        <td>{{item.usuario.nombre}}</td>
+                        <td>{{item.tipoPago.tipoPago}}</td>
+                        <td>{{item.monto}}</td>
+                        <td>{{item.descripcion}}</td>
+                        <td>{{item.fechaMovimiento}}</td>
+                        <td><button (click)="detallePedidoModal(item.pedido, modalPedido)" class="btn btn-estilo" placement="top" ngbTooltip="Ver detalles"><i class="fas fa-eye"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer flex-style">
+            <button type="button" id="button" style="width: 30%;" (click)="modal.dismiss('Cross click')" class="btn btn-info btn-estilo"> Cerrar </button>
+        </div>
+    </ng-template>
+
+    <ng-template #modalPedido let-modal>
+        <div class="modal-header">
+            <div class="conflex">
+                <h4 class="modal-title">DETALLE DEL PEDIDO</h4>
+                <hr>
+                <div class="flex">
+                    <h5>Cliente: <small>{{pedido.persona.nombre}}</small></h5>
+                    <h5>Cedula: <small>{{pedido.persona.cedula}}</small></h5>
+                </div>
+            </div>
+
+            <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{pedido.mesa.mesa}}</h5>
+                        <small class="text-muted">Solicitado: {{pedido.hora|date: 'hh:mm:ss'}}</small>
+                    </div>
+                    <hr>
+                    <div *ngFor="let item of pedido.listaProd">
+                        <p class="mb-1"><b>{{item.producto.proNombre}}</b></p>
+                        <p class="mb-1"> cantidad: <b>{{item.cantidad}}</b> </p>
+                        <p class="mb-1">{{item.producto.descripcion}}</p>
+                        <hr>
+                    </div>
+                </a>
+            </div>
+            <div class="cont-total">
+                <p class="badge badge-primary">Total: {{pedido.total}}</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="button" style="width: 100%;" (click)="cerrarModal()" class="btn btn-estilo"> Cerrar </button>
+        </div>
+    </ng-template>
+</div>

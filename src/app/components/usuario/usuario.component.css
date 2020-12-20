@@ -1,0 +1,169 @@
+.contenedor {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.cont-table {
+    width: 95%;
+}
+
+.cont-header {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 8% 14% 12% 7% 26% 8% 6% 12% 5%;
+    grid-template-areas: "cedula nombre usuario telefono email rol genero estado editar";
+    text-align: left;
+}
+
+.cont-header>.cont-header .t1,
+.cont-header .t2,
+.cont-header .t3,
+.cont-header .t4,
+.cont-header .t5,
+.cont-header .t6,
+.cont-header .t7,
+.cont-header .t8,
+.cont-header .t9 {
+    margin: 0;
+    padding: 0;
+}
+
+.cont-header .t1 {
+    grid-area: cedula;
+}
+
+.cont-header .t2 {
+    grid-area: nombre;
+}
+
+.cont-header .t3 {
+    grid-area: usuario;
+}
+
+.cont-header .t4 {
+    grid-area: telefono;
+}
+
+.cont-header .t5 {
+    grid-area: email;
+    text-align: center;
+    padding-right: 25%;
+}
+
+.cont-header .t6 {
+    grid-area: rol;
+    text-align: center;
+    padding-right: 20%;
+}
+
+.cont-header .t7 {
+    grid-area: genero;
+    text-align: left;
+    padding-left: 10%;
+}
+
+.cont-header .t8 {
+    grid-area: estado;
+    text-align: center;
+    padding-left: 10%;
+}
+
+.cont-header .t9 {
+    grid-area: editar;
+    text-align: center;
+}
+
+.cont-flex {
+    display: flex;
+    align-items: center;
+}
+
+.cont-table-descripcion {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 8% 14% 12% 7% 26% 8% 6% 12% 5%;
+    grid-template-areas: "c1 c2 c3 c4 c5 c6 c7 c8 c9";
+    text-align: left;
+    padding: 10px 0;
+}
+
+.cont-header>.cont-table-descripcion .c1,
+.cont-table-descripcion .c2,
+.cont-table-descripcion .c3,
+.cont-table-descripcion .c4,
+.cont-table-descripcion .c5,
+.cont-table-descripcion .c6,
+.cont-table-descripcion .c7,
+.cont-table-descripcion .c8,
+.cont-table-descripcion .c9 {
+    margin: 0;
+    padding: 0;
+}
+
+.cont-header .c1 {
+    grid-area: c1;
+}
+
+.cont-header .c2 {
+    grid-area: c2;
+}
+
+.cont-header .c3 {
+    grid-area: c3;
+}
+
+.cont-header .c4 {
+    grid-area: c4;
+}
+
+.cont-header .c5 {
+    grid-area: c5;
+}
+
+.cont-header .c6 {
+    grid-area: c6;
+}
+
+.cont-header .c7 {
+    grid-area: c7;
+}
+
+.cont-header .c8 {
+    grid-area: c8;
+}
+
+.cont-header .c9 {
+    grid-area: c9;
+}
+
+.btn-edit {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-editar {
+    background-color: black;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.cont-primario {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.label-ced {
+    padding-left: 1.6%;
+}
+
+.cont-buscar {
+    width: 75%;
+}
+
+input[type="search"] {
+    width: 100%;
+}

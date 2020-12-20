@@ -1,0 +1,180 @@
+<body>
+    <div class="contenedor">
+        <div class="float-right" style="padding-top: 10px; padding-bottom: 5px;">
+            <form class="form-inline">
+                <div class="form-group flex-style">
+                    <div class="buscar">
+                        Buscar: <input type="text" class="form-control" name="filterPost" placeholder="Search..." [(ngModel)]="filterPedidos">
+                    </div>
+
+                    <div class="input-group estadosSelect">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Opciones</label>
+                        </div>
+                        <select class="custom-select" #op id="opciones" (change)="filtrarPedidos(op.value)">
+                          <option value="Proceso" selected >Pedidos</option>
+                          <option value="Entregado">Pedidos Entregados</option>
+                          <option value="Anulado">Pedidos Anulados</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-success" pTooltip="Actualizar pedidos" tooltipPosition="top" (click)="listarPedidos()"><i class="fas fa-sync"></i></button>
+                    <button (click)="generarPdf()" class="btn btn-light btn-estilo " placement="top" ngbTooltip="Generar Reporte"><i class="fas fa-print"></i></button>
+                    <div class="input-group">
+                        <!-- <div class="p-field p-col-12 p-md-4"> -->
+                        <p-calendar [(ngModel)]="fecha" [name]="fecha" [showIcon]="true" [ngModelOptions]="{standalone: true}" inputId="fecha"></p-calendar>
+                        <!-- </div> -->
+                    </div>
+                    <button class="btn btn-light btn-buscar btn-estilo" (click)="formatoFecha()">Buscar</button>
+                </div>
+            </form>
+        </div>
+        <p-toast [style]="{width: '400px', 'font-size':'13px'}"></p-toast>
+        <!-- tabla ng bostrap -->
+        <table class="table tabla-pedidos">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Cédula</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col"># mesa</th>
+                    <th scope="col">Hora de solicitud</th>
+                    <th scope="col">estado</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pedi of pedidos | filter:filterPedidos">
+                    <th scope="row">{{pedi.persona.cedula}}</th>
+                    <td scope="row">{{pedi.persona.nombre}}</td>
+                    <td scope="row">{{pedi.mesa.mesa}}</td>
+                    <td><b>{{pedi.hora|date:"hh:mm:ss"}}</b></td>
+                    <td *ngIf="pedi.estado.nomEstado=='Entregado'">
+                        <span class="badge badge-success" style="font-size: 15px;">{{pedi.estado.nomEstado}}</span></td>
+                    <td *ngIf="pedi.estado.nomEstado=='Anulado'">
+                        <span class="badge badge-danger" style="font-size: 15px;">{{pedi.estado.nomEstado}}</span></td>
+                    <td *ngIf="pedi.estado.nomEstado!='Entregado' && pedi.estado.nomEstado!='Anulado'">
+                        <div style="width: 70%;">
+                            <select (change)="cambiarStatus(pedi)" [compareWith]="comstatus" class="custom-select" [(ngModel)]="pedi.estado" name="estado" required>
+                            <option *ngFor="let status of estados" [ngValue]="status">{{status.nomEstado}}</option>
+                        </select>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-estilo" pTooltip="Ver Detalle del pedido" tooltipPosition="top" (click)="detallePedidoModal(pedi, modalPedido)"><i class="far fa-eye"></i></button>
+                    </td>
+                    <td>
+                        <button class="btn btn-estilo" *ngIf="pedi.estado.nomEstado=='Entregado'" pTooltip="Imprimir recibo" tooltipPosition="top" (click)="reciboPedidoModal(pedi,modalRecibo)"><i class="fas fa-print"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<ng-template #modalPedido let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">DETALLE DEL PEDIDO</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{pedido.mesa.mesa}}</h5>
+                    <small class="text-muted">Solicitado: {{pedido.hora|date: 'hh:mm:ss'}}</small>
+                </div>
+                <hr>
+                <div *ngFor="let item of pedido.listaProd">
+                    <p class="mb-1"><b>{{item.producto.proNombre}}</b></p>
+                    <p class="mb-1"> cantidad: <b>{{item.cantidad}}</b> </p>
+                    <p class="mb-1">{{item.producto.descripcion}}</p>
+                    <hr>
+                </div>
+            </a>
+        </div>
+        <div class="cont-total">
+            <p class="badge badge-primary">Total: {{pedido.total}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" id="button" *ngIf="pedido.estado.nomEstado!='Entregado' && pedido.estado.nomEstado!='Anulado'" style="width: 100%;" class="btn btn-info btn-estilo" (click)="abrirTipoPago(modalTipoPago)"> Terminar pedido </button>
+    </div>
+</ng-template>
+
+<ng-template #modalTipoPago let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Tipo de pago</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="list-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Tipo: </label>
+                </div>
+                <p-dropdown inputId="pago" [options]="mediosPago" [(ngModel)]="pago" placeholder="Pago" optionLabel="tipoPago" required></p-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" id="button" style="width: 100%;" (click)="finalizarPedido(pedido)" class="btn btn-info btn-estilo"> Finalizar pedido </button>
+    </div>
+</ng-template>
+
+<ng-template #modalRecibo let-modal>
+    <div class="modal-body cont-recibo">
+        <div class="cont-rec-cabezera">
+            <h6>DETALLE DE RECIBO</h6>
+            <P>(Documento sin validez tributaria)</P>
+            <p>----------------------------------------------------------------------</p>
+            <p>{{cabecera.nombreRestaurante}}</p>
+            <p>Ruc: {{cabecera.ruc}}</p>
+            <p>Fecha-Hora: {{pedido.hora|date: 'dd/MM/yyyy h:mm:ss'}}</p>
+            <p>=========================================</p>
+            <div class="cont-rec-cliente">
+                <p>Cliente: {{persona.nombre | uppercase}}</p>
+                <p>C.I: {{persona.cedula}}</p>
+            </div>
+            <p>=========================================</p>
+        </div>
+        <div class="cont-rec-cuerpo">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="cont-rec-table">Detalle</th>
+                        <th scope="col" class="cont-rec-table">Cant.</th>
+                        <th scope="col" class="cont-rec-table">Pvp</th>
+                        <th scope="col" class="cont-rec-table">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of pedido.listaProd">
+                        <td>{{item.producto.proNombre}}</td>
+                        <td>{{item.cantidad}}</td>
+                        <td>{{item.producto.precio}}</td>
+                        <td>{{item.producto.precio * item.cantidad}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="cont-rec-total">
+            Total: {{pedido.total}}
+        </div>
+        <p>----------------------------------------------------------------------</p>
+        <div class="cont-rec-pie">
+
+            <p>Telefono: {{cabecera.telefono}}</p>
+            <p>Movil: {{cabecera.celular}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="btn-rec">
+            <button type="button" class="btn btn-outline-danger btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+            <button type="button" class="btn btn-estilo btn-print">Imprimir</button>
+        </div>
+    </div>
+</ng-template>

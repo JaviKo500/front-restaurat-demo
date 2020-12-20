@@ -1,0 +1,38 @@
+<body>
+    <div class="contenedor">
+        <div class="cont-form">
+            <form action="" class="form" #formLogin="ngForm">
+                <h2>{{titulo}}</h2>
+                <!-- input usuario -->
+                <div class="cont-usuername">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" name="username" pInputText [(ngModel)]="usuario.username" autofocus autocomplete="off" #username="ngModel" required [ngClass]="{'p-invalid':username.invalid && (username.dirty || username.touched)}">
+                    <div class="sms-alert" *ngIf="username.invalid && (username.dirty || username.touched)">
+                        <div class="sms-alert-required" *ngIf="username.errors.required">
+                            <small class="p-invalid">Ingrese un nombre de usuario</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- input password -->
+                <div class="cont-password">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="password" pInputText [(ngModel)]="usuario.password" #password="ngModel" required [ngClass]="{'p-invalid':password.invalid && (password.dirty || password.touched)}">
+                    <div class="sms-alert" *ngIf="password.invalid && (password.dirty || password.touched)">
+                        <div class="sms-alert-required" *ngIf="password.errors.required">
+                            <small class="p-invalid">Ingrese una contraseña</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="cont-button">
+                    <div class="cont-recuperar">
+                        <button pButton pRipple type="button" label="Recuperar contraseña" class="p-button-info p-button-text text-white"></button>
+                    </div>
+                    <div class="cont-login">
+                        <button id="btn-login" pButton pRipple type="submit" (click)="login()" label="Iniciar sesión" class="p-button-raised" [disabled]="!formLogin.form.valid"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>

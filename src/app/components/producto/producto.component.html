@@ -1,0 +1,223 @@
+<div id="p">
+    <div class="btn-group" [ngClass]="{'alinearBarra': authService.isAuthenticated(), 'cont-barra':!authService.isAuthenticated()}" id="climain" role="group" *ngIf="pedido.mesa != null" aria-label="Button group with nested dropdown" style="padding:20px ;">
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" style="border-radius:10px 0px 0px 10px;" type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            CARTA MENÚ
+          </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a class="dropdown-item" *ngFor="let cate of categorias" (click)="listarProductosCategoria(cate.id)">{{cate.nombreCat}}</a>
+            </div>
+        </div>
+        <div class="cont-barra-btns">
+            <button class="btn btn-dark" *ngIf="!authService.isAuthenticated()" style="border-radius:0px 10px 10px  0px;" (click)="statusModal(modalStatus)">Mi pedido</button>
+            <div>
+                <button class="btn btn-success" style="margin-left: 10px; border-radius: 10px;" type="button" (click)="pedidoModal(modalPedido)"><i class="fas fa-shopping-cart"></i></button>
+                <span class="badge badge-info notify"> {{productosSize}} </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="tot" [ngClass]="{'altura':pedido.mesa}">
+
+        <body>
+            <div class="alert alert-primary" role="alert" *ngIf="productos.length == 0">
+                Menu no disponible aun, intente actualizando la página!
+            </div>
+            <div *ngFor='let prod of productos'>
+                <div class="card" (click)="productoModal(prod, modalProd)">
+                    <div class="imgBox">
+                        <img src="{{url}}producto/img/{{prod.imagen}}" alt="not found">
+                    </div>
+                    <div class="details">
+                        <div class="textContent">
+                            <h3><b>{{prod.proNombre}}</b></h3>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <div class="icon"><i class="fas fa-dollar-sign"></i> {{prod.precio}}</div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </body>
+
+    </div>
+    <ng-template #modalProd let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">{{producto.proNombre}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body flex-style">
+            <div class="cont-description">
+                <div class="cont-des-img">
+                    <img src="{{url}}producto/img/{{producto.imagen}}" [alt]="producto.proNombre">
+                </div>
+                <p> <b>Descripción: </b> {{producto.descripcion}}</p>
+                <p> <b>Categoría: </b> {{producto.categoria.nombreCat}}</p>
+                <p *ngIf="authService.isAuthenticated()"> <b>Precio: </b> {{producto.precio | currency}}</p>
+            </div>
+        </div>
+        <div class="modal-footer" *ngIf="pedido.mesa != null">
+            <div class="trans">
+                <button type="button" class="btn  btn-min-max btn-light" (click)="restarCantidad()"> <i class="fas fa-minus"></i> </button>
+                <span style="font-size: 30px;">{{cantidad}}</span>
+                <button type="button" class="btn  btn-min-max btn-light" (click)="sumarCantidad()"><i class="fas fa-plus"></i> </button>
+            </div>
+            <button type="button" style="width: 100%; height: 45px;" class="btn btn-light btn-estilo" (click)="agregarProducto(producto)"> Agregar a mi pedido </button>
+        </div>
+        <div class="modal-footer" *ngIf="authService.isAuthenticated() && authService.hasRole('ROLE_ADMIN')">
+            <div class="cont-btn-prod">
+                <button type="button" class="btn btn-outline-danger btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                <button type="button" class="btn btn-estilo btn-print" (click)="cerrarModal()" [routerLink]="['/productos/editar', producto.id]">Editar</button>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #modalPedido let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Revisar mi pedido</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-primary" role="alert" *ngIf="pedido.listaProd.length == 0">
+                <b>¡No tienes productos para realizar el pedido!</b>
+            </div>
+            <div class="list-group" *ngIf="pedido.listaProd.length>0">
+                <a (click)="UpCantidadModal(item, modalUpCantidad)" class="list-group-item list-group-item-action" *ngFor="let item of pedido.listaProd">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{item.producto.proNombre}}</h5>
+                        <small class="text-muted"><i class="fas fa-dollar-sign"></i>{{calcularImporte(item.cantidad,item.producto.precio)}}</small>
+                    </div>
+                    <p class="mb-1"><b>Cant:</b> {{item.cantidad}}</p>
+                    <div class="cont-btn-delete">
+                        <button type="button" (click)="eliminarProducto(item.producto.id)" class="btn btn-danger text-center"><i class="far fa-trash-alt"></i></button>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <h3 class="text-muted text-left">Total: {{calcularTotal()}}</h3>
+            <button type="button" style="width: 100%;" class="btn btn-light btn-estilo" [disabled]="pedido.listaProd.length == 0" (click)="pedidoPersonaModal(modalPersona)" (click)="modal.dismiss('Cross click')">  Realizar mi pedido </button>
+        </div>
+    </ng-template>
+
+    <ng-template #modalUpCantidad let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Actualizar cantidad</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-footer" *ngIf="pedido.mesa != null">
+            <div class="trans">
+                <button type="button" id="button" class="btn btn-light" (click)="restarCantidad()"> - </button>
+                <span>{{cantidad}}</span>
+                <button type="button" id="button" class="btn btn-light" (click)="sumarCantidad()"> + </button>
+            </div>
+            <button type="button" id="button" style="width: 100%;" class="btn btn-light" (click)="actualizarCantidadPedido(producto.id)"> Actualizar </button>
+        </div>
+
+    </ng-template>
+
+    <ng-template #modalStatus let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Revisar mi pedido</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="cont-status">
+                <div class="jumbotron jumbotron-fluid">
+                    <div class="container">
+                        <h3 class="display-6">El estado de su pedido es: </h3>
+                        <p class="lead">{{statusMensaje}}</p>
+                        <div class="cont-btn">
+                            <button type="button" class="btn btn-dark btn-edit" (click)="pedidoModalEditar(modalPedidoEditar)">Editar Pedido</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="cont-btns">
+                <button type="button" class="btn btn-outline-danger btn-cancelar" (click)="cancelarPedido()">  Cancelar pedido </button>
+                <button type="button" class="btn btn-dark btn-cerrar " (click)="modal.dismiss('Cross click')"> Cerrar</button>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #modalPedidoEditar let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Editar mi pedido</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-primary" role="alert" *ngIf="pedido.listaProd.length == 0">
+                <b>No tienes productos para realizar el pedido!</b>
+            </div>
+            <div class="list-group" *ngIf="pedido.listaProd.length>0">
+                <div class="alert alert-warning" role="alert">
+                    Si desea agregar mas productos para actualizar su pedido confirmelo en el carrito, caso contrario actualice la cantidad y actualicelo desde aqui
+                </div>
+                <a (click)="UpCantidadModal(item, modalUpCantidad)" class="list-group-item list-group-item-action" *ngFor="let item of pedido.listaProd">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{item.producto.proNombre}}</h5>
+                        <small class="text-muted"><i class="fas fa-dollar-sign"></i>{{calcularImporte(item.cantidad, item.producto.precio)}}</small>
+                    </div>
+                    <p class="mb-1">{{item.producto.descripcion}}</p>
+                    <button type="button" (click)="eliminarProducto(item.producto.id)" class="btn btn-danger text-center"><i class="far fa-trash-alt"></i></button>
+                </a>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="cont-btns">
+                <button type="button" class="btn btn-outline-danger btn-cancelar" (click)="modal.dismiss('Cross click')">  Cancelar </button>
+                <button type="button" class="btn btn-dark btn-cerrar " [disabled]="pedido.listaProd.length == 0" (click)="realizarPedido()" (click)="modal.dismiss('Cross click')">  Actualizar pedido</button>
+            </div>
+        </div>
+    </ng-template>
+    <!-- modal persona -->
+    <ng-template #modalPersona let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Mis datos</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form #personaForm="ngForm">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="nombre" class="form-control" name="nombre" aria-describedby="nombre" autocomplete="off" [(ngModel)]="persona.nombre" #nombre="ngModel" required>
+                    <div class="alert alert-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+                        <div *ngIf="nombre.errors.required">
+                            Nombre requerido
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cedula">Cédula</label>
+                    <input type="number" class="form-control" name="cedula" autocomplete="off" [(ngModel)]="persona.cedula" #cedula="ngModel" minlength="10" required>
+                    <small>Ingrese su cédula de 10 digitos</small>
+                    <div class="alert alert-danger" *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)">
+                        <div *ngIf="cedula.errors.required">
+                            Cédula requerida
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="cont-btns">
+                <button type="button" class="btn btn-outline-danger btn-cancelar" (click)="modal.dismiss('Cross click')">  Cancelar </button>
+                <button type="button" class="btn btn-dark btn-cerrar " [disabled]="!personaForm.form.valid" (click)="realizarPedido()" (click)="modal.dismiss('Cross click')">  Realizar pedido</button>
+            </div>
+        </div>
+    </ng-template>
+</div>

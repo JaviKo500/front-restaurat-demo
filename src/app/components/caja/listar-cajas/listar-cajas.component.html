@@ -1,0 +1,110 @@
+<!-- toast -->
+<p-toast [style]="{width: '400px', 'font-size':'13px'}"></p-toast>
+<div class="contenedor">
+    <div class="cont-table">
+        <p-dataView #dv [value]="cajas" [paginator]="true" [rows]="10" filterBy="numeroCaja" [sortField]="sortField" [sortOrder]="sortOrder" [style]="{'background-color': 'black'}">
+            <p-header>
+                <div class="ui-helper-clearfix">
+                    <div class="p-grid cont-search">
+                        <label class="label-ced" for="numeroCaja">Buscar por Numero:</label>
+                        <div class="p-col-6 p-md-4  cont-primario">
+                            <div class="cont-buscar">
+                                <input type="search" placeholder="ejem: 1" class="input-buscar" pInputText (input)="dv.filter($event.target.value)">
+                            </div>
+                            <div class="btn-add">
+                                <button pButton pRipple pTooltip="Agregar otra caja" tooltipPosition="top" type="button" icon="fas fa-cash-register" class="p-button-rounded p-button-secondary" (click)="cajaModal(modalCaja)"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- editado -->
+                <div class="header-title">
+                    <div class="cont-header">
+                        <div class="t1"><b>Número</b></div>
+                        <div class="t2"><b>Nombre</b></div>
+                        <div class="t3"><b></b></div>
+                        <div class="t4"><b></b></div>
+
+                    </div>
+                </div>
+            </p-header>
+            <ng-template let-caja pTemplate="listItem">
+                <div class="cont-flex cont-table-descripcion">
+                    <div class="c1"><b>{{caja.numeroCaja}}</b></div>
+                    <div class="c2">{{caja.nombreCaja}}</div>
+                    <div class="c3" pTooltip="Cambiar estado de la caja" tooltipPosition="top">
+                        <p-toggleButton [(ngModel)]="caja.estado" (click)="actualizarCajaEstado(caja)" onLabel="Habilitado" offLabel="Deshabilitado" offIcon="pi pi-times" [style]="{'width':'150px','height':'40px'}"></p-toggleButton>
+                    </div>
+                    <div class="c4">
+                        <div class="btn-edit">
+                            <button pTooltip="Editar caja" tooltipPosition="top" class="btn btn-dark btn-editar" (click)="cajaModalEditar(caja,modalCaja)"> <i class="far fa-edit"></i></button>
+                        </div>
+
+                    </div>
+                </div>
+            </ng-template>
+        </p-dataView>
+    </div>
+
+    <ng-template #modalCaja let-modal>
+        <form #formCaja="ngForm">
+            <div class="modal-header">
+                <h4 class="modal-title" *ngIf="cajaAdd.id">Editar Caja</h4>
+                <h4 class="modal-title" *ngIf="!cajaAdd.id">Agregar Caja</h4>
+                <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-form">
+                    <div class="p-fluid p-formgrid p-grid">
+                        <label for="numeroCaja">Número caja </label>
+                        <input name="numeroCaja" type="text" pInputText [(ngModel)]="cajaAdd.numeroCaja" #numeroCaja="ngModel" required minlength="1" [ngClass]="{'p-invalid':numeroCaja.invalid && (numeroCaja.dirty || numeroCaja.touched)}">
+                        <div class="sms-alert" *ngIf="numeroCaja.invalid && (numeroCaja.dirty || numeroCaja.touched)">
+                            <div class="sms-alert-required" *ngIf="numeroCaja.errors.required">
+                                <small class="p-invalid">Ingresar un numero</small>
+                            </div>
+                            <div class="sms-alert-length" *ngIf="numeroCaja.errors.minlength">
+                                <small class="p-invalid">Ingresar al menos 1 caracteres</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-fluid p-formgrid p-grid">
+                    <label for="nombreCanombreCajaja">Nombre caja </label>
+                    <input name="nombreCaja" type="text" pInputText [(ngModel)]="cajaAdd.nombreCaja" #nombreCaja="ngModel" required minlength="3" [ngClass]="{'p-invalid':nombreCaja.invalid && (nombreCaja.dirty || nombreCaja.touched)}">
+                    <div class="sms-alert" *ngIf="nombreCaja.invalid && (nombreCaja.dirty || nombreCaja.touched)">
+                        <div class="sms-alert-required" *ngIf="nombreCaja.errors.required">
+                            <small class="p-invalid">Ingresar un nombre</small>
+                        </div>
+                        <div class="sms-alert-length" *ngIf="nombreCaja.errors.minlength">
+                            <small class="p-invalid">Ingresar al menos 3 caracteres</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="btn" *ngIf="!cajaAdd.id; else editar">
+                    <div class="btn-can">
+                        <button type="button" class="btn btn-outline-danger btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                    </div>
+                    <div class="clean"></div>
+                    <div>
+                        <button type="button" class="btn-save btn-estilo" (click)="guardarCaja()" [ngClass]="{'btn-save-disabled' :!formCaja.form.valid}" [disabled]="!formCaja.form.valid">Agregar</button>
+                    </div>
+                </div>
+                <ng-template #editar>
+                    <div class="btn">
+                        <div class="btn-can">
+                            <button type="button" class="btn btn-outline-danger btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                        </div>
+                        <div class="clean"></div>
+                        <div>
+                            <button type="button" class="btn-save  btn-estilo" (click)="actualizarCaja(cajaAdd)" [ngClass]="{'btn-save-disabled' :!formCaja.form.valid}" [disabled]="!formCaja.form.valid">Guardar cambios</button>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </form>
+    </ng-template>
+</div>

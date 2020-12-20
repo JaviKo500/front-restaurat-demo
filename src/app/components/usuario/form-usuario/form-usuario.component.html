@@ -1,0 +1,165 @@
+<body>
+    <!-- Toast -->
+    <p-toast [style]="{width: '400px', 'font-size':'13px'}"></p-toast>
+    <div class="cont-form p-fluid">
+        <div *ngIf="!usuario.id; else titulo2">
+            <h2>{{title}}</h2>
+        </div>
+        <ng-template #titulo2>
+            <div>
+                <h2>{{title2}}</h2>
+            </div>
+        </ng-template>
+        <hr>
+        <form action="" class="form-grid" #formUsuario="ngForm" (ngSubmit)="enviarDatosUsuario()">
+            <div class="form-usuario">
+                <div class="form-principal">
+                    <div class="form-datos">
+                        <div class="datos-nombre">
+                            <label for="nombre">Nombre</label>
+                            <input name="nombre" type="text" pInputText [(ngModel)]="usuario.nombre" autocomplete="off" #nombre="ngModel" required minlength="2" [ngClass]="{'p-invalid': nombre.invalid && (nombre.dirty || nombre.touched) }">
+                            <div class="sms-alert" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+                                <div class="sms-alert-required" *ngIf="nombre.errors.required">
+                                    <small class="p-invalid">Ingresar un nombre</small>
+                                </div>
+                                <div class="sms-alert-length" *ngIf="nombre.errors.minlength">
+                                    <small class="p-invalid">Mínimo ingrese 2 caracteres</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="datos-cedula">
+                            <label for="cedula">Cédula</label>
+                            <input name="cedula" type="text" pInputText [(ngModel)]="usuario.cedula" autocomplete="off" #cedula="ngModel" required minlength="5" [ngClass]="{'p-invalid': cedula.invalid && (cedula.dirty || cedula.touched) }">
+                            <div class="sms-alert" *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)">
+                                <div class="sms-alert-required" *ngIf="cedula.errors.required">
+                                    <small class="p-invalid">Cédula inválida</small>
+                                </div>
+                                <div class="sms-alert-length" *ngIf="cedula.errors.minlength">
+                                    <small class="p-invalid">Mínimo ingrese 5 caracteres</small>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-datos-mail">
+                        <label for="email">Email</label>
+                        <input name="email" type="email" pInputText [(ngModel)]="usuario.email" autocomplete="off" #email="ngModel" required minlength="2" [ngClass]="{'p-invalid':email.invalid && (email.dirty || email.touched)}">
+                        <div class="sms-alert" *ngIf="email.invalid && (email.dirty || email.touched)">
+                            <div class="sms-alert-required" *ngIf="email.errors.required">
+                                <small class="p-invalid">Email inválido</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-secudaria">
+                        <div class="cont-sexo-input">
+                            <label for="sexo">Género</label>
+                            <div class="cont-genero">
+                                <div class="cont-genero-input">
+                                    <p-dropdown inputId="sexo" class="sexo" name="selectCategoria" [options]="generos" #sexo="ngModel" [(ngModel)]="usuario.sexo" placeholder="Género" optionLabel="tipo" required></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="sms-alert" *ngIf="sexo.touched">
+                                <div class="sms-alert-required" *ngIf="!usuario.sexo">
+                                    <small class="p-invalid">Seleccione una género</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-datos-telefono">
+                            <label for="telefono">Teléfono</label>
+                            <input name="telefono" type="number" pInputText [(ngModel)]="usuario.telefono" autocomplete="off" name="telefono" #telefono="ngModel" required [ngClass]="{'p-invalid':telefono.invalid && (telefono.dirty || telefono.touched)}">
+                            <div class="sms-alert" *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)">
+                                <div class="sms-alert-required" *ngIf="telefono.errors.required">
+                                    <small class="p-invalid">Ingrese un número</small>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-datos-usuario">
+                        <div class="datos-1">
+                            <div class="datos-username">
+                                <label for="username">Nombre usuario</label>
+                                <input name="username" type="text" pInputText [(ngModel)]="usuario.username" autocomplete="off" #username="ngModel" required minlength="2" [ngClass]="{'p-invalid':username.invalid && (username.dirty || username.touched)}">
+                                <div class="sms-alert" *ngIf="username.invalid && (username.dirty || username.touched)">
+                                    <div class="sms-alert-required" *ngIf="username.errors.required">
+                                        <small class="p-invalid">Usuario inválida</small>
+                                    </div>
+                                    <div class="sms-alert-length" *ngIf="username.errors.minlength">
+                                        <small class="p-invalid">Mínimo ingrese 2 caracteres</small> </div>
+                                </div>
+                            </div>
+                            <div class="datos-rol">
+                                <label for="rol">Rol</label>
+                                <div class="cont-roles-input">
+                                    <p-dropdown inputId="rol" name="rol" [options]="roles" #rol="ngModel" [(ngModel)]="role" placeholder="Rol" optionLabel="nombre" required></p-dropdown>
+                                    <div class="sms-alert" *ngIf="rol.touched">
+                                        <div class="sms-alert-required" *ngIf="!usuario.roles">
+                                            <small class="p-invalid">Seleccione una ro</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="datos-password">
+                            <div class="password1">
+                                <label for="password">Contraseña</label>
+                                <div class="cont-pass">
+                                    <input name="password" id="password" type="password" pInputText [(ngModel)]="usuario.password" #password="ngModel" (keyup)="cambiarEstado(usuario.password)" required minlength="6" [ngClass]="{'p-invalid':password.invalid && (password.dirty || password.touched)}">
+                                    <div class="cont-btn">
+                                        <button type="button" value="" class="btn-pass btn-password" (click)="verPassword1('password')"><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                                <div class="sms-alert" *ngIf="password.invalid && (password.dirty || password.touched)">
+                                    <div class="sms-alert-required" *ngIf="password.errors.required">
+                                        <small class="p-invalid">Contraseña inválida</small>
+                                    </div>
+                                    <div class="sms-alert-length" *ngIf="password.errors.minlength">
+                                        <small class="p-invalid">Mínimo ingrese 6 caracteres</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="password2">
+                                <label for="password2">Confirmar contraseña </label>
+                                <div class="cont-pass2">
+                                    <input name="password2" id="password2" type="password" pInputText [(ngModel)]="password2" (keyup)="confirmarPassword(password2)" required minlength="6" [disabled]="!activar" [ngClass]="{'p-invalid':bandera==false}">
+                                    <div class="cont-btn">
+                                        <button type="button" value="" class="btn-pass btn-password" (click)="verPassword2('password2')"><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                                <div class="sms-alert" *ngIf="bandera==false">
+                                    <div class="sms-alert-required">
+                                        <small class="p-invalid">Contraseñas diferentes</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="from-btn">
+                <div class="btn" *ngIf="!usuario.id; else editar">
+                    <div class="btn">
+                        <div class="btn-can">
+                            <button type="button" [routerLink]="['/usuario']" class="btn btn-outline-danger btn-cancelar">Cancelar</button>
+                        </div>
+                        <div class="clean"></div>
+                        <div>
+                            <input type="submit" value="{{boton}}" class="btn-save" [ngClass]="{'btn-save-disabled' :!formUsuario.form.valid}" [disabled]="!formUsuario.form.valid">
+                        </div>
+                    </div>
+                </div>
+                <ng-template #editar>
+                    <div class="btn">
+                        <div class="btn-can">
+                            <button type="button" [routerLink]="['/usuario']" class="btn btn-outline-danger btn-cancelar">Cancelar</button>
+                        </div>
+                        <div class="clean"></div>
+                        <div>
+                            <input type="submit" value="{{boton2}}" class="btn-save" [ngClass]="{'btn-save-disabled' :!formUsuario.form.valid}" [disabled]="!formUsuario.form.valid">
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </form>
+    </div>
+</body>

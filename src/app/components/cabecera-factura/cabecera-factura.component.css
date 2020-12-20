@@ -1,0 +1,13 @@
+.btn-estilo {
+    background-color: black;
+    color: white;
+}
+
+.container {
+    width: 60%;
+    border: 1px solid #c9c7c7;
+    border-radius: 10px;
+    margin-bottom: 0px;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 0px 30px;
+}

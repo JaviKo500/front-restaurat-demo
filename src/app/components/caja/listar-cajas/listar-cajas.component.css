@@ -1,0 +1,205 @@
+.contenedor {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.cont-table {
+    width: 95%;
+}
+
+.cont-header {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-areas: "numero nombre estado editar";
+    text-align: left;
+}
+
+.cont-header>.cont-header .t1,
+.cont-header .t2,
+.cont-header .t3,
+.cont-header .t4 {
+    margin: 0;
+    padding: 0;
+}
+
+.cont-header .t1 {
+    text-align: center;
+    grid-area: numero;
+}
+
+.cont-header .t2 {
+    text-align: center;
+    grid-area: nombre;
+}
+
+.cont-header .t3 {
+    grid-area: estado;
+}
+
+.cont-header .t4 {
+    grid-area: editar;
+}
+
+.cont-flex {
+    display: flex;
+    align-items: center;
+}
+
+.cont-table-descripcion {
+    width: 100%;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-areas: "c1 c2 c3 c4";
+    text-align: left;
+    padding: 10px 0;
+}
+
+.cont-header>.cont-table-descripcion .c1,
+.cont-table-descripcion .c2,
+.cont-table-descripcion .c3,
+.cont-table-descripcion .c4 {
+    margin: 0;
+    padding: 0;
+}
+
+.cont-table-descripcion .c1 {
+    grid-area: c1;
+    padding-left: 12px;
+    display: flex;
+    justify-content: center;
+}
+
+.cont-header .c2 {
+    grid-area: c2;
+}
+
+.cont-header .c3 {
+    grid-area: c3;
+    display: flex;
+    justify-content: center;
+}
+
+.cont-header .c4 {
+    grid-area: c4;
+}
+
+.c2 {
+    display: flex;
+    justify-content: center;
+}
+
+.c3 {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-edit {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-editar {
+    background-color: black;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.cont-primario {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.label-ced {
+    padding-left: 1.6%;
+}
+
+.cont-buscar {
+    width: 75%;
+}
+
+input[type="search"] {
+    width: 100%;
+}
+
+
+/* modal */
+
+.modal-header {
+    background-color: #f3f2f2;
+}
+
+.modal-form {
+    min-height: 100px;
+    padding-top: 10px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #f3f2f2;
+}
+
+.btn {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.btn-save {
+    color: #fff;
+    background-color: #008080;
+    border: 1px solid #008080;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 auto 0;
+    height: 50px;
+    overflow: hidden;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.clean {
+    min-width: 64px;
+}
+
+.btn-cancelar {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 auto 0;
+    height: 50px;
+    overflow: hidden;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-color: transparent;
+}
+
+.btn-save-disabled {
+    background-color: #DFDFDF;
+    color: #fff;
+    border-color: #DFDFDF;
+    cursor: unset;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 auto 0;
+    height: 50px;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.btn-estilo {
+    background-color: black;
+    color: white;
+}

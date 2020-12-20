@@ -1,0 +1,105 @@
+<div class="menu" *ngIf="(authservice.isAuthenticated())">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Logo</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <!--dropdown menu -->
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" (click)="cargarDatosCategoria()" id="menu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Menú
+              </a>
+                    <div class="dropdown-menu" aria-labelledby="menu">
+                        <a class="dropdown-item" href="#" *ngFor="let item of categoriasItems" [routerLink]="[('menu/categoria/' + item.id)]">{{item.nombreCat | uppercase}}</a>
+                    </div>
+                </li>
+                <!-- dropdown producto -->
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="producto" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Productos
+              </a>
+                    <div class="dropdown-menu" aria-labelledby="producto">
+                        <a class="dropdown-item" [routerLink]="[('productos')]">Listar</a>
+                        <a class="dropdown-item" *ngIf="authservice.hasRole('ROLE_ADMIN')" [routerLink]="[('productos/agregar')]">Agregar</a>
+                    </div>
+                </li>
+                <!-- dropdown pedidos -->
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" (click)="cargarDatosMesas()" id="producto" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Pedidos
+                          </a>
+                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                        <li><a href="#" class="dropdown-item" [routerLink]="[('pedidos')]">Listar</a></li>
+                        <li class="dropdown-submenu">
+                            <a tabindex="-1" href="#" class="dropdown-item">Agregar pedido</a>
+                            <ul class="dropdown-menu">
+                                <li *ngFor="let item of mesasItems"><a href="#" class="dropdown-item" [routerLink]="[('productos/'+item.mesa)]">{{item.mesa}}</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Mesas -->
+                <li class="nav-item active" *ngIf="authservice.hasRole('ROLE_ADMIN')">
+                    <a class="nav-link" [routerLink]="[('mesas')]">Mesas</a>
+                </li>
+                <!-- usuarios -->
+                <li class="nav-item dropdown active" *ngIf="authservice.hasRole('ROLE_ADMIN')">
+                    <a class="nav-link dropdown-toggle" href="#" id="producto" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Usuarios
+                              </a>
+                    <div class="dropdown-menu" aria-labelledby="producto">
+                        <a class="dropdown-item" [routerLink]="[('usuario')]">Listar</a>
+                        <a class="dropdown-item" [routerLink]="[('usuario/form')]">Agregar</a>
+                    </div>
+                </li>
+                <!-- caja -->
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="caja" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Caja
+                    </a>
+                    <div class="dropdown-menu img-items" aria-labelledby="caja">
+                        <a class="dropdown-item" *ngIf="authservice.hasRole('ROLE_ADMIN')" [routerLink]="[('caja/lista')]">Listar cajas</a>
+                        <a class="dropdown-item" *ngIf="authservice.hasRole('ROLE_ADMIN')" [routerLink]="[('arqueo/lista')]">Listar Arqueos de caja</a>
+                        <a class="dropdown-item" [routerLink]="[('caja/movimientos')]">Listar moviminetos caja</a>
+                        <a class="dropdown-item" *ngIf="authservice.hasRole('ROLE_ADMIN')" [routerLink]="[('caja/arqueo')]">Abrir nuevo arqueo</a>
+                    </div>
+                </li>
+                <li class="nav-item active" *ngIf="authservice.hasRole('ROLE_ADMIN')">
+                    <a class="nav-link" [routerLink]="[('cabecera')]">Restaurante <i class="fas fa-cogs"></i> </a>
+                </li>
+            </ul>
+            <div>
+                <ul class="navbar-nav navbar-rigth">
+                    <li>
+                        <a *ngIf="!authservice.isAuthenticated()" [routerLink]="[('/login')]" class="btn btn-outline-primary">Log in</a>
+                    </li>
+                    <li class="dropdown" *ngIf="authservice.isAuthenticated()">
+                        <button class="btn btn-user" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <img src="assets/multimedia/icons/user-1.png" alt="" *ngIf="authservice.hasRole('ROLE_ADMIN')">
+                          <img src="assets/multimedia/icons/user-c.png" alt="" *ngIf="!authservice.hasRole('ROLE_ADMIN')">
+                        </button>
+                        <div class="dropdown-menu mover-drop" aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-item datos-user">
+                                <div class="cont-img-user">
+                                    <img src="assets/multimedia/icons/user.png" alt="" *ngIf="authservice.hasRole('ROLE_ADMIN')">
+                                    <img src="assets/multimedia/icons/user-c2.png" alt="" *ngIf="!authservice.hasRole('ROLE_ADMIN')">
+                                </div>
+                                <hr>
+                                <p>{{authservice.usuario.nombre}}</p>
+                                <p>{{authservice.usuario.username}}</p>
+                                <p>{{authservice.usuario.roles}}</p>
+                            </div>
+                            <hr>
+                            <div class="cont-img-user">
+                                <button (click)="logout()" class=" btn btn-dark " type="submit">Cerrar Sesión</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>

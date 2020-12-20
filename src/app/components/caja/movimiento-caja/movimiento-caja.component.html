@@ -1,0 +1,95 @@
+<!-- toast -->
+<p-toast [style]="{width: '400px', 'font-size':'13px'}"></p-toast>
+<div class="contenedor">
+    <div class="cont-table">
+        <p-dataView #dv [value]="movimientosCaja" [paginator]="true" [rows]="10" filterBy="fechaMovimiento" [sortField]="sortField" [sortOrder]="sortOrder" [style]="{'background-color': 'black'}">
+            <p-header>
+                <div class="ui-helper-clearfix cont-header-flex">
+                    <div class="p-grid cont-flex-buscar">
+                        <label class="label-ced" for="fechaMovimiento">Buscar por Fecha:</label>
+                        <div class="p-col-6  cont-primario">
+                            <div class="cont-buscar">
+                                <input type="search" placeholder="ejem: 1" class="input-buscar" pInputText (input)="dv.filter($event.target.value)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-grid cont-date">
+                        <label for="id">Buscar por Fecha:</label>
+                        <div class="piker-date">
+                            <form class="form-inline">
+                                <div class="form-group flex-style">
+                                    <div class="input-group">
+                                        <p-calendar [(ngModel)]="fechaIni" [name]="fechaIni" [showIcon]="true" [ngModelOptions]="{standalone: true}" inputId="fecha"></p-calendar>
+                                    </div>
+                                </div>
+                            </form>
+                            <button class="btn btn-dark btn-buscar" (click)="movimientosEntreFechas()">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- editado -->
+                <div class="header-title">
+                    <div class="cont-header">
+                        <div class="t1"><b>Monto</b></div>
+                        <div class="t2"><b>Tipo de pago</b></div>
+                        <div class="t3"><b>Descripción</b></div>
+                        <div class="t4"><b>Fecha Movimiento</b></div>
+                        <div class="t5">
+
+                        </div>
+                    </div>
+                </div>
+            </p-header>
+            <ng-template let-movimiento pTemplate="listItem">
+                <div class="cont-flex cont-table-descripcion">
+                    <div class="c1"><b>{{movimiento.monto}}</b></div>
+                    <div class="c2" *ngIf="movimiento.tipoPago">{{movimiento.tipoPago.tipoPago}}</div>
+                    <div class="c3">{{movimiento.descripcion}}</div>
+                    <div class="c4">{{movimiento.fechaMovimiento|date:"dd-MM-yyyy hh:mm:ss"}}</div>
+                    <div class="c5">
+                        <button class="btn btn-dark btn-ver" pTooltip="Ver detalles del pedido" tooltipPosition="top" (click)="detallePedidoModal(movimiento.pedido, modalPedido)"><i class="far fa-eye"></i></button>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dataView>
+    </div>
+    <ng-template #modalPedido let-modal>
+        <div class="modal-header">
+            <div class="conflex">
+                <h4 class="modal-title">DETALLE DEL PEDIDO</h4>
+                <hr>
+                <div class="flex">
+                    <h5>Cliente: <small>{{pedido.persona.nombre}}</small></h5>
+                    <h5>Cedula: <small>{{pedido.persona.cedula}}</small></h5>
+                </div>
+            </div>
+
+            <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{pedido.mesa.mesa}}</h5>
+                        <small class="text-muted">Solicitado: {{pedido.hora|date: 'hh:mm:ss'}}</small>
+                    </div>
+                    <hr>
+                    <div *ngFor="let item of pedido.listaProd">
+                        <p class="mb-1"><b>{{item.producto.proNombre}}</b></p>
+                        <p class="mb-1"> cantidad: <b>{{item.cantidad}}</b> </p>
+                        <p class="mb-1">{{item.producto.descripcion}}</p>
+                        <hr>
+                    </div>
+                </a>
+            </div>
+            <div class="cont-total">
+                <p class="badge badge-primary">Total: {{pedido.total}}</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="button" style="width: 100%;" (click)="cerrarModal()" class="btn btn-info"> Cerrar </button>
+        </div>
+    </ng-template>
+</div>
